@@ -1,0 +1,75 @@
+<div [hidden]="submitted">
+  <h1>Hero Form</h1>
+  <form (ngSubmit)="onSubmit()" #heroForm="ngForm">
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="name"
+        required
+        minlength="3"
+        [(ngModel)]="model.name"
+        name="name"
+      />
+      <div style="color:red;" *ngIf="heroForm.controls.name?.errors?.required">
+        First name is {{heroForm.controls.name?.errors?.required?'required':''}}
+      </div>
+      <div style="color:red;" *ngIf="heroForm.controls.name?.errors?.minlength">
+        Minimum length is of {{heroForm.controls.name?.errors?.minlength?.requiredLength}} is required
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="alterEgo">Alter Ego</label>
+      <input
+        type="text"
+        class="form-control"
+        id="alterEgo"
+        [(ngModel)]="model.alterEgo"
+        name="alterEgo"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="power">Hero Power</label>
+      <select
+        class="form-control"
+        id="power"
+        required
+        [(ngModel)]="model.power"
+        name="power"
+      >
+        <option *ngFor="let pow of powers" [value]="pow">{{pow}}</option>
+      </select>
+    </div>
+    <button
+      type="submit"
+      class="btn btn-success"
+      [disabled]="!heroForm.form.valid"
+    >
+      Submit
+    </button>
+    <button type="button" class="btn btn-default" (click)="newHero();heroForm.reset()">New Hero</button>
+  </form>
+</div>
+<div [hidden]="!submitted" class="container">
+  <h2>You submitted the following:</h2>
+  <div class="row">
+    <div class="col-sm-3">Name:</div>
+    <div class="col-sm-9">{{ model.name }}</div>
+  </div>
+  <div class="row">
+    <div class="col-sm-3">Alter Ego:</div>
+    <div class="col-sm-9">{{ model.alterEgo }}</div>
+  </div>
+  <div class="row">
+    <div class="col-sm-3">Power:</div>
+    <div class="col-sm-9">{{ model.power }}</div>
+  </div>
+  <br />
+  <button class="btn btn-primary" (click)="submitted=false">Edit</button>
+</div>
+<pre class="border" [hidden]="submitted">
+{{diagnostic | json}}
+</pre>
